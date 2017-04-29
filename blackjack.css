@@ -1,0 +1,58 @@
+body {
+    font-size: 16px;
+}
+
+footer {
+    clear: both;
+    padding-top: 32px;
+    width: 50%;
+    margin: auto;
+}
+
+footer button {
+    width: 32%;
+}
+
+#table {
+    width: 600px;
+    height: 600px;
+    background-color: darkgreen;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.card {
+    width: 72px;
+    height: 96px;
+    position: relative;
+    overflow: hidden;
+    float: left;
+    margin-left: 15px;
+}
+
+.card img {
+  position: absolute;
+  
+}
+
+.title {
+    color: white;
+    font-size: 3em;
+    float: left;
+    margin-left: 32px;
+}
+
+.score {
+    color: white;
+    font-size: 3em;
+    float: right;
+    margin-right: 32px;
+}
+
+.hand {
+  width: 100%;
+  clear: both;
+  padding-top: 25px;
+  margin-left: 48px;
+}

@@ -1,0 +1,59 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Blackjack</title>
+  <meta name="description" content="Blackjack">
+  <meta name="author" content="Chad Anthony">
+
+  <link rel="stylesheet" href="blackjack.css">
+
+
+</head>
+
+<body>
+
+  <div id="table">
+    <h1 class="title">Blackjack</h1>
+    <h1 class="score">Score: 10</h1>
+    <div style="clear:both;"></div>
+
+    <div id = "dealer" class="hand">
+      <h2>Dealer's Hand</h2>
+      <div class="card">
+        <img src="http://storage.googleapis.com/codeskulptor-assets/cards_jfitz.png"  style="position: absolute; top: 0px; left: 0px;" />
+      </div>
+
+      <div class="card">
+        <img src="http://storage.googleapis.com/codeskulptor-assets/cards_jfitz.png"  style="position: absolute; top: 0px; left: -72px;" />
+      </div>
+    </div>
+
+    <div id ="player" class="hand">
+      <h2>Player's Hand</h2>
+      <div class="card">
+        <img src="http://storage.googleapis.com/codeskulptor-assets/cards_jfitz.png"  style="position: absolute; top: 0px; left: 0px;" />
+      </div>
+
+      <div class="card">
+        <img src="http://storage.googleapis.com/codeskulptor-assets/cards_jfitz.png"  style="position: absolute; top: -96px; left: -72px;" />
+      </div>
+
+    </div>
+    <footer>
+        <button id="deal">Deal</button>
+        <button id="hit">Hit</button>
+        <button id="stand">Stand</button>
+    </footer>
+  </div> <!--End of table div-->
+
+
+
+
+  <script src="blackjack.js"></script>
+</body>
+
+</html>
