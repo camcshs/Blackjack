@@ -17,38 +17,16 @@ var VALUES = {
     'Q': 10,
     'K': 10
 };
-
+var CARD_IMAGES = "http://storage.googleapis.com/codeskulptor-assets/cards_jfitz.png";
 var CARD_BACK = "http://storage.googleapis.com/codeskulptor-assets/card_jfitz_back.png";
-var CARD_SIZE = [72, 96];
+var CARD_SIZE = [-72, -96];
 
 var in_play = false;
 var outcome = "";
-var score = 0;
+var score = 10;
 var player_hand, dealer_hand, house_deck;
 
-// class Card:
-//     def __init__(self, suit, rank):
-//         if (suit in SUITS) and (rank in RANKS):
-//             self.suit = suit
-//             self.rank = rank
-//         else:
-//             self.suit = None
-//             self.rank = None
-//             print "Invalid card: ", suit, rank
-//
-//     def __str__(self):
-//         return self.suit + self.rank
-//
-//     def get_suit(self):
-//         return self.suit
-//
-//     def get_rank(self):
-//         return self.rank
-//
-//     def draw(self, canvas, pos):
-//         card_loc = (CARD_CENTER[0] + CARD_SIZE[0] * RANKS.index(self.rank),
-//                     CARD_CENTER[1] + CARD_SIZE[1] * SUITS.index(self.suit))
-//         canvas.draw_image(card_images, card_loc, CARD_SIZE, [pos[0] + CARD_CENTER[0], pos[1] + CARD_CENTER[1]], CARD_SIZE)
+
 
 
 function Card(suit, rank) {
@@ -74,53 +52,25 @@ function Card(suit, rank) {
         return this.suit + this.rank
     };
 
-    this.draw = function () {
-      
+    this.draw = function (player) {
+      var rankValue = CARD_SIZE[0] * RANKS.indexOf(this.rank);
+      var suitValue = CARD_SIZE[1] * SUITS.indexOf(this.suit);
+        var cardHTML = document.createElement('div');
+        cardHTML.className = "card";
+       cardHTML.innerHTML = '<img src="' + CARD_IMAGES + '"  style="position: absolute; top:' + suitValue + 'px; left:' + rankValue +'px;" />';
+      //  console.log(document.getElementById(player));
+      document.getElementById(player).appendChild(cardHTML);
     }
 
 }
 
 
-// # define hand class
-// class Hand:
-//     def __init__(self):
-//         self.cards=[]	# create Hand object
-//     def __str__(self):
-//             # return a string representation of a hand
-//         card_list = ""
-//         for i in range(len(self.cards)):
-//             card_list += str(self.cards[i]) + " "
-//         return "Hand contains: " + card_list
-//
-//     def add_card(self, card):
-//         self.cards.append(card)	# add a card object to a hand
-//
-//     def get_value(self):
-//         # count aces as 1, if the hand has an ace, then add 10 to hand value if it doesn't bust
-//         hand_count = 0
-//         ace_count = 0
-//         for i in range(len(self.cards)):
-//             hand_count += VALUES[self.cards[i].get_rank()]
-//             # If card is and Ace, increase counter
-//             if self.cards[i].get_rank() == "A":
-//                 ace_count += 1
-//         # Add ten to hand value for each Ace as long as value doesn't exceed 21
-//         for a in range(ace_count):
-//             if hand_count < 11:
-//                 hand_count += 10
-//         return hand_count
-//
-//     def draw(self, canvas, pos):
-//
-//         for c in self.cards:
-//             c.draw(canvas, pos)
-//             pos[0] += 82
-//
 
-
-function Hand() {
+function Hand(player) {
 
     this.cards = [];
+
+    this.player = player;
 
     this.add_card = function (card) {
         this.cards.push(card);
@@ -136,13 +86,14 @@ function Hand() {
             if (card.get_rank() === "A") {
                 ace_count += 1;
             }
-
-            for (var i = 1; i <= ace_count; i++) {
-                if (hand_count < 11) {
-                    hand_count += 10;
-                }
-            }
         });
+
+        for (var i = 1; i <= ace_count; i++) {
+            if (hand_count <= 11) {
+                hand_count += 10;
+            }
+        }
+
         return hand_count;
     };
 
@@ -153,6 +104,15 @@ function Hand() {
         });
 
         return card_list;
+
+    };
+
+
+    this.draw = function () {
+
+        this.cards.forEach(function(card) {
+             card.draw(player);
+        })
 
     }
 
@@ -189,8 +149,8 @@ function deal() {
 
 
     // Create Player and Dealer Hands
-    player_hand = new Hand();
-    dealer_hand = new Hand();
+    player_hand = new Hand("player");
+    dealer_hand = new Hand("dealer");
 
     // Deal two cards to Player and Dealer
     for (var i = 1; i < 3; i++) {
@@ -205,6 +165,9 @@ function deal() {
         in_play = true;
         outcome = "";
     }
+
+    draw();
+
 }
 
 function hit() {
@@ -224,7 +187,11 @@ function hit() {
             in_play = false;
         }
     }
+    draw();
+
 }
+
+
 
 function stand() {
 
@@ -253,6 +220,9 @@ function stand() {
             in_play = false;
         }
     }
+
+    draw();
+
 }
 
 
@@ -285,3 +255,33 @@ document.addEventListener('DOMContentLoaded', function () {
 document.getElementById("deal").addEventListener("click", deal, false);
 document.getElementById("hit").addEventListener("click", hit, false);
 document.getElementById("stand").addEventListener("click", stand, false);
+
+
+function draw() {
+    document.getElementById("score").innerHTML = "Score: " + score;
+    document.getElementById("outcome").innerText = outcome;
+    document.getElementById("dealer").innerHTML = '';
+    document.getElementById("player").innerHTML = '';
+
+    dealer_hand.draw();
+    player_hand.draw();
+
+    if (in_play) {
+
+
+        document.getElementById("dealer").firstChild.innerHTML = '<img src="' + CARD_BACK + '"/>';
+
+    }
+
+    if (in_play) {
+        document.getElementById("playMessage").innerText = "Hit or Stand?";
+    } else {
+        document.getElementById("playMessage").innerText = "New Deal?";
+    }
+
+
+
+}
+
+
+
